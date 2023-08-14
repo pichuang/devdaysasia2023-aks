@@ -1,12 +1,29 @@
 # Demo: Integrating Azure OpenAI and Azure Kubernetes Service to build Your Own Intelligent Apps
 
+- Last Updated: `20230814`
+- STATUS: `WIP, DO NOT USE`
+- TODO
+  - [ ] Create AKS and surrounding services
+  - [ ] Put a Customer GPT Service on AKS
+
+
 ## Description
 
-## System Information
+## Components Version
+
+|                       Azure Service                      | Support Agreement |        Version       |
+|:--------------------------------------------------------:|:-----------------:|:--------------------:|
+| [Azure Kubernetes Service][6]                            | GA                | 1.27.1               |
+| [Azure Service Mesh (a.k.a Istio Service Mesh)][5]       | Preview           | 1.17                 |
+| [Azure Monitor managed service for Prometheus][4]        | GA                |                      |
+| [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
+| Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
 
 ## Architecture
 
 ## References
+
+- [pichuang/k8s-deployment-strategies-azure-edition][7]
 
 ## Seminar Information
 
@@ -16,3 +33,9 @@
 - Date: `Wed., Sep. 13, 2023`
 
 [1]: https://www.digitimes.com.tw/seminar/DevDaysAsia2023/en/agenda.html
+[2]: https://github.com/grafana/grafana/blob/main/CHANGELOG.md#956-2023-07-11
+[3]: https://learn.microsoft.com/en-us/azure/managed-grafana/
+[4]: https://learn.microsoft.com/en-Us/azure/azure-monitor/essentials/prometheus-metrics-overview
+[5]: https://learn.microsoft.com/en-us/azure/aks/istio-about
+[6]: https://learn.microsoft.com/en-us/azure/aks/
+[7]: https://github.com/pichuang/k8s-deployment-strategies-azure-edition
