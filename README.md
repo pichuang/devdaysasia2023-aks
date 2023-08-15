@@ -3,7 +3,7 @@
 [![Run Azure Login with OpenID Connect](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml)
 [![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
 
-- Last Updated: `20230815`
+- Last Updated: `20230816`
 - STATUS: `WIP, DO NOT USE`
 - TODO
   - [x] GitHub Workflow and Terraform setup
@@ -15,7 +15,8 @@
     - [x] Public AKS
     - [ ] Enable Azure Service Mesh
   - [ ] Put a Customer GPT Service on AKS + GitOps
-    - [ ] Flux Podinfo
+    - [x] Flux Podinfo
+    - [ ] Canary Deployment
 
 ## Description
 
@@ -23,8 +24,9 @@
 
 |                       Azure Service                      | Support Agreement |        Version       |
 |:--------------------------------------------------------:|:-----------------:|:--------------------:|
-| [Azure Kubernetes Service][6]                            | GA                | 1.27.1               |
+| [Azure Kubernetes Service][6]                            | Preview           | 1.27.1               |
 | [Azure Service Mesh (a.k.a Istio Service Mesh)][5]       | Preview           | 1.17                 |
+| GitOps Flux v2                                           | GA                | v2.0.1               |
 | [Azure Monitor managed service for Prometheus][4]        | GA                |                      |
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
