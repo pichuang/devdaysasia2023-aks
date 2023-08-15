@@ -12,9 +12,10 @@
     - [x] Destroy resource group via GitHub Workflows
   - [ ] Create AKS and surrounding services
     - [x] VNET
-    - [ ] Public AKS
+    - [x] Public AKS
     - [ ] Enable Azure Service Mesh
   - [ ] Put a Customer GPT Service on AKS + GitOps
+    - [ ] Flux Podinfo
 
 ## Description
 
@@ -36,6 +37,7 @@
 - [terraform-github-actions/GitHub Actions Workflows for Terraform][8]
 - [Use the Azure login action with OpenID Connect][9]
 - [Using OIDC with Terraform in GitHub Actions][10]
+- [stefanprodan/podinfo][10]
 
 ## Seminar Information
 
@@ -54,3 +56,4 @@
 [8]: https://github.com/Azure-Samples/terraform-github-actions
 [9]: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect
 [10]: https://colinsalmcorner.com/using-oidc-with-terraform-in-github-actions/
+[11]: https://github.com/stefanprodan/podinfo

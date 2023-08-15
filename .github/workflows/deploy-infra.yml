@@ -47,7 +47,7 @@ jobs:
 
     # Terraform Quality Checks
     - name: Setup TFLint
-      uses: terraform-linters/setup-tflint@v1
+      uses: terraform-linters/setup-tflint@v3
 
     - name: Terraform fmt
       id: fmt
@@ -195,4 +195,5 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         ARM_USE_OIDC: true
+        ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
       working-directory: ${{ env.tf_actions_working_dir }}

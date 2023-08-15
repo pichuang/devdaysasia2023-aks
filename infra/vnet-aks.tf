@@ -3,8 +3,8 @@
 resource "azurerm_virtual_network" "vnet-aks" {
   # 10.0.128.4 - 10.0.255.254
   address_space       = ["10.0.128.0/17"]
-  location            = var.location
-  name                = "vnet-aks"
+  location            = var.lab-location
+  name                = var.vnet-name
   resource_group_name = var.lab-rg
 
   depends_on = [
