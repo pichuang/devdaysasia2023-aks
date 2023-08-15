@@ -3,9 +3,10 @@
 - Last Updated: `20230814`
 - STATUS: `WIP, DO NOT USE`
 - TODO
+  - [ ] GitHub Workflow and Terraform setup
+    - [ ] [Use the Azure login action with OpenID Connect][9]
   - [ ] Create AKS and surrounding services
-  - [ ] Put a Customer GPT Service on AKS
-
+  - [ ] Put a Customer GPT Service on AKS + GitOps
 
 ## Description
 
@@ -24,6 +25,8 @@
 ## References
 
 - [pichuang/k8s-deployment-strategies-azure-edition][7]
+- [terraform-github-actions/GitHub Actions Workflows for Terraform][8]
+- [Use the Azure login action with OpenID Connect][9]
 
 ## Seminar Information
 
@@ -39,3 +42,5 @@
 [5]: https://learn.microsoft.com/en-us/azure/aks/istio-about
 [6]: https://learn.microsoft.com/en-us/azure/aks/
 [7]: https://github.com/pichuang/k8s-deployment-strategies-azure-edition
+[8]: https://github.com/Azure-Samples/terraform-github-actions
+[9]: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect
