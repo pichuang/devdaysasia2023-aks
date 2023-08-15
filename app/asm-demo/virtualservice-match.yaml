@@ -1,0 +1,28 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: ns-ab-testing
+  name: vs-match-my-app
+  labels:
+    app: my-app
+spec:
+  hosts:
+    - uat.aks.aliez.tw
+  gateways:
+    - istio-http-gateway
+  http:
+    - route:
+      - destination:
+          host: svc-my-app-v1
+      match:
+      - headers:
+          x-api-version:
+            exact: v1.0.0
+    - route:
+        - destination:
+            host: svc-my-app-v2
+      match:
+      - headers:
+          x-api-version:
+            exact: v2.0.0

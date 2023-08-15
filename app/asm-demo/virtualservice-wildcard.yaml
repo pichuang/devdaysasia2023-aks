@@ -1,0 +1,17 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: ns-ab-testing
+  name: vs-wildcard-my-app
+  labels:
+    app: my-app
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - istio-http-gateway
+  http:
+    - route:
+      - destination:
+          host: svc-my-app-v1

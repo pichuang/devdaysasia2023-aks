@@ -8,6 +8,18 @@ terraform {
       # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
       version = ">= 3.69.0"
     }
+
+    time = {
+      source = "hashicorp/time"
+      # https://registry.terraform.io/providers/hashicorp/time/latest/docs
+      version = ">= 0.9.1"
+    }
+
+    null = {
+      source = "hashicorp/null"
+      # https://registry.terraform.io/providers/hashicorp/null/latest/docs
+      version = ">=3.2.1"
+    }
   }
 
   # When authenticating using OpenID Connect (OIDC)
@@ -22,7 +34,11 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
   use_oidc = true
 }
 

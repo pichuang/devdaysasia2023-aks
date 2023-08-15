@@ -35,6 +35,16 @@ resource "azurerm_kubernetes_flux_configuration" "flux-config" {
     timeout_in_seconds         = 600
   }
 
+  kustomizations {
+    name                       = "asm-demo"
+    path                       = "./app/asm-demo"
+    garbage_collection_enabled = true
+    recreating_enabled         = true
+    sync_interval_in_seconds   = 60
+    retry_interval_in_seconds  = 60
+    timeout_in_seconds         = 600
+  }
+
   depends_on = [
     azurerm_kubernetes_cluster_extension.extension-flux
   ]

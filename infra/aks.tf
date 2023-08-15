@@ -95,12 +95,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidrs = ["10.0.196.0/22"]
   }
 
-  ingress_application_gateway {
-    # gateway_id =
-    gateway_name = "apic-aks"
-    # subnet_cidr =
-    subnet_id = azurerm_subnet.subnet-apic.id
+  service_mesh_profile {
+    external_ingress_gateway_enabled = true
+    mode                             = "Istio"
   }
+
 }
 
 # resource "azurerm_kubernetes_cluster_node_pool" "nodepool-app1" {

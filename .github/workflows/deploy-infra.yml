@@ -6,9 +6,14 @@ on:
     inputs:
       is_destroy:
         type: boolean
-        description: Destroy environment?
+        description: Destroy environment? (default without -destory oprtions)
         required: true
         default: false
+      is_lock:
+        type: boolean
+        description: Lock environment or not? (default -lock=true)
+        required: true
+        default: true
 
   pull_request:
     paths:
@@ -84,15 +89,27 @@ jobs:
       env:
         DESTROY: ${{ github.event.inputs.is_destroy }}
 
+    - name: Calculate lock arg
+      id: lock_arg
+      run: |
+        if [ "$LOCK" == "true" ]; then
+          echo "::set-output name=val:: "
+        else
+          echo "::set-output name=val::-lock=false"
+        fi
+      env:
+        LOCK: ${{ github.event.inputs.is_lock }}
+
     - name: Terraform Plan
       id: plan
-      run: terraform plan $DESTROY -no-color --out=out.tfplan
+      run: terraform plan $DESTROY $LOCK -no-color --out=out.tfplan
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         ARM_USE_OIDC: true
         DESTROY: ${{ steps.destroy_arg.outputs.val }}
+        LOCK: ${{ steps.lock_arg.outputs.val }}
 
     - name: Publish Terraform Plan
       uses: actions/upload-artifact@v3
@@ -156,13 +173,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # - name: Log in to Azure using OIDC
-    #   uses: azure/login@v1
-    #   with:
-    #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
@@ -187,13 +197,26 @@ jobs:
     - name: Display structure of downloaded files
       run: ls -laR
 
+    - name: Calculate lock arg
+      id: lock_arg
+      run: |
+        if [ "$LOCK" == "true" ]; then
+          echo "::set-output name=val:: "
+        else
+          echo "::set-output name=val::-lock=false"
+        fi
+      env:
+        LOCK: ${{ github.event.inputs.is_lock }}
+
     # Terraform Apply
     - name: Terraform Apply
-      run: terraform apply -auto-approve out.tfplan
+      run: terraform apply $LOCK -auto-approve out.tfplan
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         ARM_USE_OIDC: true
         ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+        LOCK: ${{ steps.lock_arg.outputs.val }}
       working-directory: ${{ env.tf_actions_working_dir }}
+

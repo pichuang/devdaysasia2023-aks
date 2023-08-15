@@ -10,13 +10,19 @@
     - [x] [Use the Azure login action with OpenID Connect][9]
     - [x] Apply Terraform to create resource group via GitHub Workflows
     - [x] Destroy resource group via GitHub Workflows
-  - [ ] Create AKS and surrounding services
+  - [x] Create AKS
     - [x] VNET
     - [x] Public AKS
-    - [ ] Enable Azure Service Mesh
+    - [x] Enable Azure Service Mesh
+  - [ ] Surrounding Services
+    - [ ] Azure Log Analytics Workspace
+    - [ ] Azure Monitor managed service for Prometheus
+    - [ ] Azure Managed Grafana
+    - [ ] Azure OpenAI
   - [ ] Put a Customer GPT Service on AKS + GitOps
     - [x] Flux Podinfo
-    - [ ] Canary Deployment
+    - [x] Canary Deployment with Azure Service Mesh
+    - [ ] AOAI Application
 
 ## Description
 
