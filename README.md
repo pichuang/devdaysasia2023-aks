@@ -1,11 +1,19 @@
 # Demo: Integrating Azure OpenAI and Azure Kubernetes Service to build Your Own Intelligent Apps
 
-- Last Updated: `20230814`
+[![Run Azure Login with OpenID Connect](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml)
+[![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
+
+- Last Updated: `20230815`
 - STATUS: `WIP, DO NOT USE`
 - TODO
-  - [ ] GitHub Workflow and Terraform setup
-    - [ ] [Use the Azure login action with OpenID Connect][9]
+  - [x] GitHub Workflow and Terraform setup
+    - [x] [Use the Azure login action with OpenID Connect][9]
+    - [x] Apply Terraform to create resource group via GitHub Workflows
+    - [x] Destroy resource group via GitHub Workflows
   - [ ] Create AKS and surrounding services
+    - [x] VNET
+    - [ ] Public AKS
+    - [ ] Enable Azure Service Mesh
   - [ ] Put a Customer GPT Service on AKS + GitOps
 
 ## Description
@@ -27,6 +35,7 @@
 - [pichuang/k8s-deployment-strategies-azure-edition][7]
 - [terraform-github-actions/GitHub Actions Workflows for Terraform][8]
 - [Use the Azure login action with OpenID Connect][9]
+- [Using OIDC with Terraform in GitHub Actions][10]
 
 ## Seminar Information
 
@@ -44,3 +53,4 @@
 [7]: https://github.com/pichuang/k8s-deployment-strategies-azure-edition
 [8]: https://github.com/Azure-Samples/terraform-github-actions
 [9]: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect
+[10]: https://colinsalmcorner.com/using-oidc-with-terraform-in-github-actions/

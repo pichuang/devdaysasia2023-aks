@@ -1,0 +1,198 @@
+name: Run the Demo Infrastructure
+
+# on:[push]
+on:
+  workflow_dispatch:
+    inputs:
+      is_destroy:
+        type: boolean
+        description: Destroy environment?
+        required: true
+        default: false
+
+  pull_request:
+    paths:
+    - infra/**
+
+env:
+  tf_actions_working_dir: infra
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      tfplanExitCode: ${{ steps.plan.outputs.exitcode }}
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Log in to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    # Terraform Quality Checks
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v1
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Init TFLint
+      run: tflint --init
+
+    - name: Run TFLint
+      run: tflint -f compact
+
+    - name: Calculate destroy arg
+      id: destroy_arg
+      run: |
+        if [ "$DESTROY" == "true" ]; then
+          echo "::set-output name=val::-destroy"
+        else
+          echo "::set-output name=val:: "
+        fi
+      env:
+        DESTROY: ${{ github.event.inputs.is_destroy }}
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan $DESTROY -no-color --out=out.tfplan
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+        DESTROY: ${{ steps.destroy_arg.outputs.val }}
+
+    - name: Publish Terraform Plan
+      uses: actions/upload-artifact@v3
+      with:
+        name: tf-plan
+        path: ${{ env.tf_actions_working_dir }}/out.tfplan
+
+    - name: Create the plan summary
+      uses: actions/github-script@v6
+      if: always()
+      id: summary
+      env:
+        PLAN: '${{ steps.plan.outputs.stdout }}'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // 1. Prep the output
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
+
+          \`\`\`
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
+
+          </details>
+
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          // 2. Set the output variable
+          const fs = require('fs');
+          fs.writeFileSync('${{ env.tf_actions_working_dir }}/summary.md', output);
+          core.setOutput('summary', output);
+
+    - name: Write the step summary
+      if: always()
+      run: cat summary.md >> $GITHUB_STEP_SUMMARY
+
+  apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    environment: production
+    needs: [plan]
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # - name: Log in to Azure using OIDC
+    #   uses: azure/login@v1
+    #   with:
+    #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+      working-directory: ${{ env.tf_actions_working_dir }}
+
+    # Download saved plan from artifacts
+    - name: Download Terraform Plan
+      uses: actions/download-artifact@v3
+      with:
+        name: tf-plan
+        path: ${{ env.tf_actions_working_dir }}
+
+    - name: Display structure of downloaded files
+      run: ls -laR
+
+    # Terraform Apply
+    - name: Terraform Apply
+      run: terraform apply -auto-approve out.tfplan
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+      working-directory: ${{ env.tf_actions_working_dir }}
