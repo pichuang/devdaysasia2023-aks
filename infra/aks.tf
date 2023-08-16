@@ -5,8 +5,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name       = var.lab-rg
   dns_prefix                = var.dns-prefix
   sku_tier                  = "Standard"
-  automatic_channel_upgrade = "stable"
-  kubernetes_version        = "1.27.1"
+  automatic_channel_upgrade = "patch"
+  kubernetes_version        = "1.27.3"
 
   image_cleaner_enabled        = false
   image_cleaner_interval_hours = 48
@@ -101,9 +101,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   key_vault_secrets_provider {
-    secret_rotation_enabled = true
+    secret_rotation_enabled  = true
     secret_rotation_interval = "2m"
   }
+
+  oidc_issuer_enabled       = true
+  workload_identity_enabled = true
 }
 
 # resource "azurerm_kubernetes_cluster_node_pool" "nodepool-app1" {

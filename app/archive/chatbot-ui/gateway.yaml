@@ -1,0 +1,16 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  namespace: ns-chatbot-ui
+  name: gateway-chatbot-ingress
+spec:
+  selector:
+    istio: aks-istio-ingressgateway-external # use Azure Service Mesh default controller
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+      - "*"

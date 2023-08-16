@@ -2,21 +2,23 @@
 
 
 ```bash
-az cloud set --name AzureChinaCloud
+export APPLICATION_NAME="sp-devdaysasia2023-github"
+
+az cloud set --name AzurePublicCloud
 az login
 az account set --subscription="20000000-0000-0000-0000-000000000000"
-az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/20000000-0000-0000-0000-000000000000" -n sp-devdaysasia2023
+az ad sp create-for-rbac -n "${APPLICATION_NAME}" --role="Contributor" --scopes="/subscriptions/20000000-0000-0000-0000-000000000000"
 ```
 
 Expected Output:
 
-```dotnetcli
-$ az ad sp create-for-rbac --role="Contributor" -n sp-devdaysasia2023 --scopes="/subscriptions/20000000-0000-0000-0000-000000000000"
+```bash
+$ az ad sp create-for-rbac --role="Contributor" -n sp-devdaysasia2023-github --scopes="/subscriptions/20000000-0000-0000-0000-000000000000"
 Creating 'Contributor' role assignment under scope '/subscriptions/20000000-0000-0000-0000-000000000000'
 The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials into your source control. For more information, see https://aka.ms/azadsp-cli
 {
   "appId": "yyyyyyyyyyy",
-  "displayName": "sp-devdaysasia2023",
+  "displayName": "sp-devdaysasia2023-github",
   "password": "xxxxxxxxxxxxxxxx",
   "tenant": "zzzzzzzzzzzz"
 }

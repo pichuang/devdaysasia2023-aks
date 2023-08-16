@@ -19,25 +19,34 @@
     - [ ] Azure Monitor managed service for Prometheus
     - [ ] Azure Managed Grafana
     - [x] Azure OpenAI (AOAI): The service should be provisioned by manual, and get the API key
-    - [ ] Azure Key Vault Secret Provider
-  - [ ] Put a Customer GPT Service on AKS + GitOps
+    - [x] Workload Identiy with OIDC
+    - [x] Azure Key Vault Secret Provider
+  - [x] Put a Customer GPT Service on AKS + GitOps
     - [x] Flux Podinfo
     - [x] Canary Deployment with Azure Service Mesh
-    - [ ] AOAI Application: [pichuang/chatbot-ui][17]
+    - [x] AOAI Application: [pichuang/chatgpt-lite][17]
 
-## Description
+## Prerequisites
+
+- Create a new Resource Group
+- Setup a Storage Account for Terraform State
+- Setup
 
 ## Components Version
 
 |                       Azure Service                      | Support Agreement |        Version       |
 |:--------------------------------------------------------:|:-----------------:|:--------------------:|
-| [Azure Kubernetes Service][6]                            | Preview           | 1.27.1               |
+| [Azure Kubernetes Service][6]                            | [GA][19]          | 1.27.3               |
 | [Azure Service Mesh (a.k.a Istio Service Mesh)][5]       | Preview           | 1.17                 |
 | GitOps Flux v2                                           | GA                | v2.0.1               |
 | [Azure Monitor managed service for Prometheus][4]        | GA                |                      |
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
 | Azure Key Vault Secrets Provider                         | GA                |                      |
+
+| OSS Project | Version |
+|:-----------:|:-------:|
+| blrchen/chatgpt-lite | latest |
 
 ## Architecture
 
@@ -54,6 +63,9 @@
 - [Empowering AI: Building and Deploying Azure AI Landing Zones with Terraform][15]
 - [Building a Private ChatGPT Interface With Azure OpenAI][16]
 - [mckaywrigley/chatbot-ui][17]
+- [flux/mozilla-sops/#azure][18]
+- [Yidadaa/ChatGPT-Next-Web][20]
+- [External Secrerts Operator - GitOps using FluxCD][21]
 
 ## Seminar Information
 
@@ -80,4 +92,8 @@
 [14]: https://github.com/k8sgpt-ai/k8sgpt
 [15]: https://techcommunity.microsoft.com/t5/azure-architecture-blog/empowering-ai-building-and-deploying-azure-ai-landing-zones-with/ba-p/3891249
 [16]: https://techcommunity.microsoft.com/t5/azure-architecture-blog/building-a-private-chatgpt-interface-with-azure-openai/ba-p/3869522
-[17]: https://github.com/pichuang/chatbot-ui
+[17]: https://github.com/pichuang/chatgpt-lite
+[18]: https://fluxcd.io/flux/guides/mozilla-sops/#azure
+[19]: https://azure.microsoft.com/en-us/updates/generally-available-kubernetes-127-support-in-aks/
+[20]: https://github.com/Yidadaa/ChatGPT-Next-Web
+[21]: https://external-secrets.io/latest/examples/gitops-using-fluxcd/

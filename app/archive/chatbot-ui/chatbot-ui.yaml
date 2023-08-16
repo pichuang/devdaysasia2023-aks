@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ns-chatbot-ui
+  name: chatbot-ui
+  labels:
+    app: chatbot-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatbot-ui
+  template:
+    metadata:
+      labels:
+        app: chatbot-ui
+    spec:
+      containers:
+        - name: chatbot-ui
+          image: ghcr.io/pichuang/chatbot-ui:devdaysasia2023
+          resources: {}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: OPENAI_API_KEY
+            - name: AZURE_DEPLOYMENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: AZURE_DEPLOYMENT_ID
+            - name: OPENAI_API_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: OPENAI_API_HOST
+            - name: OPENAI_API_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: OPENAI_API_TYPE
+            - name: DEFAULT_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: DEFAULT_MODEL
+            - name: OPENAI_API_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai-chatbot-ui
+                  key: OPENAI_API_VERSION
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: ns-chatbot-ui
+  name: svc-chatbot-ui
+  labels:
+    app: chatbot-ui
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+  selector:
+    app: chatbot-ui
+  type: ClusterIP

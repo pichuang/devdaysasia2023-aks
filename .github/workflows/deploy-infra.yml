@@ -111,6 +111,12 @@ jobs:
         DESTROY: ${{ steps.destroy_arg.outputs.val }}
         LOCK: ${{ steps.lock_arg.outputs.val }}
 
+    # https://github.com/marketplace/actions/trufflehog-oss
+    - name: TruffleHog OSS
+      uses: trufflesecurity/trufflehog@v3.52.1
+      with:
+        path: ${{ env.tf_actions_working_dir }}
+
     - name: Publish Terraform Plan
       uses: actions/upload-artifact@v3
       with:

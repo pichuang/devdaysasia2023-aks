@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jump
+  namespace: ${SERVICE_ACCOUNT_NAMESPACE}
+spec:
+  containers:
+  - name: step-cli
+    image: smallstep/step-cli
+    command:
+    - /bin/sh
+    - -c
+    - cat /var/run/secrets/tokens/test-token | step crypto jwt inspect --insecure
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: test-token
+  serviceAccountName: ${SERVICE_ACCOUNT_NAME}
+  volumes:
+  - name: test-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: test-token
+          expirationSeconds: 3600
+          audience: test

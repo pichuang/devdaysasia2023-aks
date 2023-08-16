@@ -1,0 +1,22 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: ns-chatbot-ui
+  name: vs-wildcard-chatbot-ui
+  labels:
+    app: chatbot-ui
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - gateway-chatbot-ingress
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: svc-chatbot-ui.ns-chatbot-ui.svc.cluster.local
+        port:
+          number: 80

@@ -9,10 +9,10 @@ spec:
   selector:
     app: podinfo
   ports:
-    - name: http
-      port: 9898
-      protocol: TCP
-      targetPort: http
+    - name: http # Just a name
+      port: 9898 # the port for client to access
+      protocol: TCP # TCP or UDP
+      targetPort: http # the port that Pod listen on
     - port: 9999
       targetPort: grpc
       protocol: TCP
@@ -28,10 +28,10 @@ spec:
   selector:
     app: podinfo
   ports:
-    - name: http
-      port: 9898
-      protocol: TCP
-      targetPort: http
+    - name: http # Just a name
+      port: 9898 # the port for client to access
+      protocol: TCP # TCP or UDP
+      targetPort: http # the port that Pod listen on
     - port: 9999
       targetPort: grpc
       protocol: TCP

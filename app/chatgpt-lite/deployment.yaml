@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: chatgpt-lite
+  name: chatgpt-lite
+  namespace: chatgpt-lite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatgpt-lite
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: chatgpt-lite
+        azure.workload.identity/use: "true"
+    spec:
+      serviceAccountName: sa-wi-aoai
+      restartPolicy: Always
+      containers:
+        - name: chatgpt-lite
+          image: docker.io/blrchen/chatgpt-lite:main
+          ports:
+            - containerPort: 3000
+          env:
+            - name: AZURE_OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai
+                  key: secret-aoai-api-key
+            - name: AZURE_OPENAI_API_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai
+                  key: secret-aoai-api-base-url
+            - name: AZURE_OPENAI_DEPLOYMENT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-aoai
+                  key: secret-aoai-deployment
+          volumeMounts:
+            - name: secret-aoai
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+      volumes:
+        - name: secret-aoai
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: secret-provider-aoai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: chatgpt-lite
+  name: chatgpt-lite
+  namespace: chatgpt-lite
+spec:
+  ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: chatgpt-lite
