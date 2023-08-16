@@ -100,6 +100,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     mode                             = "Istio"
   }
 
+  key_vault_secrets_provider {
+    secret_rotation_enabled = true
+    secret_rotation_interval = "2m"
+  }
 }
 
 # resource "azurerm_kubernetes_cluster_node_pool" "nodepool-app1" {

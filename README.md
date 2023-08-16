@@ -3,7 +3,7 @@
 [![Run Azure Login with OpenID Connect](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml)
 [![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
 
-- Last Updated: `20230816`
+- Last Updated: `20230817`
 - STATUS: `WIP, DO NOT USE`
 - TODO
   - [x] GitHub Workflow and Terraform setup
@@ -18,11 +18,12 @@
     - [ ] Azure Log Analytics Workspace
     - [ ] Azure Monitor managed service for Prometheus
     - [ ] Azure Managed Grafana
-    - [ ] Azure OpenAI
+    - [x] Azure OpenAI (AOAI): The service should be provisioned by manual, and get the API key
+    - [ ] Azure Key Vault Secret Provider
   - [ ] Put a Customer GPT Service on AKS + GitOps
     - [x] Flux Podinfo
     - [x] Canary Deployment with Azure Service Mesh
-    - [ ] AOAI Application
+    - [ ] AOAI Application: [pichuang/chatbot-ui][17]
 
 ## Description
 
@@ -36,6 +37,7 @@
 | [Azure Monitor managed service for Prometheus][4]        | GA                |                      |
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
+| Azure Key Vault Secrets Provider                         | GA                |                      |
 
 ## Architecture
 
@@ -46,6 +48,12 @@
 - [Use the Azure login action with OpenID Connect][9]
 - [Using OIDC with Terraform in GitHub Actions][10]
 - [stefanprodan/podinfo][10]
+- [microsoft/sample-app-aoai-chatGPT][12]
+- [Microsft Build: Integrating Azure AI and Azure Kubernetes Service to build intelligent apps][13]
+- [k8sgpt-ai/k8sgpt][14]
+- [Empowering AI: Building and Deploying Azure AI Landing Zones with Terraform][15]
+- [Building a Private ChatGPT Interface With Azure OpenAI][16]
+- [mckaywrigley/chatbot-ui][17]
 
 ## Seminar Information
 
@@ -67,3 +75,9 @@
 [9]: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-openid-connect
 [10]: https://colinsalmcorner.com/using-oidc-with-terraform-in-github-actions/
 [11]: https://github.com/stefanprodan/podinfo
+[12]: https://github.com/microsoft/sample-app-aoai-chatGPT
+[13]: https://build.microsoft.com/en-US/sessions/84b5c64f-6cb7-48b1-8f18-25f63405b965?source=sessions
+[14]: https://github.com/k8sgpt-ai/k8sgpt
+[15]: https://techcommunity.microsoft.com/t5/azure-architecture-blog/empowering-ai-building-and-deploying-azure-ai-landing-zones-with/ba-p/3891249
+[16]: https://techcommunity.microsoft.com/t5/azure-architecture-blog/building-a-private-chatgpt-interface-with-azure-openai/ba-p/3869522
+[17]: https://github.com/pichuang/chatbot-ui
