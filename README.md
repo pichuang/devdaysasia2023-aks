@@ -54,6 +54,8 @@
 - Spearker: Phil Huang @pichuang
 - Date: `Wed., Sep. 13, 2023`
 
+![DevDays Asia 2023](/images/event.jpeg)
+
 [1]: https://www.digitimes.com.tw/seminar/DevDaysAsia2023/en/agenda.html
 [2]: https://github.com/grafana/grafana/blob/main/CHANGELOG.md#956-2023-07-11
 [3]: https://learn.microsoft.com/en-us/azure/managed-grafana/
