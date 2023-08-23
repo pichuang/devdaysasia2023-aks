@@ -61,3 +61,30 @@ jobs:
       #   run: |
       #     echo "If this step fails, kube-linter found issues. Check the output of the scan step above."
       #     [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
+
+  msdo:
+    name: Microsoft Security DevOps Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      # Run analyzers
+      - name: Run Microsoft Security DevOps Analysis
+        uses: microsoft/security-devops-action@preview
+        id: msdo
+
+      # Upload alerts to the Security tab
+      - name: Upload alerts to Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.msdo.outputs.sarifFile }}
+
+      #   # Upload alerts file as a workflow artifact
+      # - name: Upload alerts file as a workflow artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: alerts
+      #     path: ${{ steps.msdo.outputs.sarifFile }}

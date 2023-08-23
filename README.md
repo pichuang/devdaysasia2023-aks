@@ -29,6 +29,7 @@
   - [x] Static Code Analysis
     - [x] [aquasecurity/tfsec][22]: Security scanner for your Terraform code
     - [x] [stackrox/kube-linter][23]: Static analysis tool that checks Kubernetes YAML files and Helm charts to ensure the applications represented in them adhere to best practices.
+    - [x] [Microsoft Security DevOps GitHub action][24]
 
 ## Prerequisites
 
@@ -53,6 +54,7 @@
 | blrchen/chatgpt-lite | latest |
 | aquasecurity/tfsec | lastet (v.1.28.1) |
 | stackrox/kube-linter | v1.0.4 |
+| Microsoft Security DevOps GitHub action | Preview |
 
 ## Architecture
 
@@ -105,3 +107,4 @@
 [21]: https://external-secrets.io/latest/examples/gitops-using-fluxcd/
 [22]: https://github.com/aquasecurity/tfsec
 [23]: https://github.com/stackrox/kube-linter
+[24]: https://learn.microsoft.com/en-us/azure/defender-for-cloud/github-action
