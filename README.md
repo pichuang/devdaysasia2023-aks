@@ -27,8 +27,8 @@
     - [x] Canary Deployment with Azure Service Mesh
     - [x] AOAI Application: [pichuang/chatgpt-lite][17]
   - [x] Static Code Analysis
-    - [x] aquasecurity/tfsec
-    - [x] stackrox/kube-linter
+    - [x] aquasecurity/tfsec: Security scanner for your Terraform code
+    - [x] stackrox/kube-linter: Static analysis tool that checks Kubernetes YAML files and Helm charts to ensure the applications represented in them adhere to best practices.
 
 ## Prerequisites
 
