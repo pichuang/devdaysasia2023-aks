@@ -48,7 +48,7 @@ jobs:
         id: kube-linter-action-scan
         with:
           directory: app/chatgpt-lite
-          config: ../.kube-linter-config.yaml
+          config: .kube-linter-config.yaml
           format: sarif
           output-file: ../results/kube-linter.sarif
         continue-on-error: true
