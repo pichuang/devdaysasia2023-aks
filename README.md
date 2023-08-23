@@ -2,8 +2,9 @@
 
 [![Run Azure Login with OpenID Connect](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml)
 [![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
+[![Static Code Analysis](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/static-code-analysis.yaml/badge.svg)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/static-code-analysis.yaml)
 
-- Last Updated: `20230823`
+- Last Updated: `20230824`
 - STATUS: `WIP, DO NOT USE`
 - TODO
   - [x] GitHub Workflow and Terraform setup
@@ -25,6 +26,9 @@
     - [x] Flux Podinfo
     - [x] Canary Deployment with Azure Service Mesh
     - [x] AOAI Application: [pichuang/chatgpt-lite][17]
+  - [x] Static Code Analysis
+    - [x] aquasecurity/tfsec
+    - [x] stackrox/kube-linter
 
 ## Prerequisites
 
