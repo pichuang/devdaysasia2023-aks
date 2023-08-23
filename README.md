@@ -48,13 +48,13 @@
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
 | Azure Key Vault Secrets Provider                         | GA                |                      |
+| Microsoft Defender for Cloud - DevOps security           | Preview           |                      |
 
 | OSS Project | Version |
 |:-----------:|:-------:|
 | blrchen/chatgpt-lite | latest |
 | aquasecurity/tfsec | lastet (v.1.28.1) |
 | stackrox/kube-linter | v1.0.4 |
-| Microsoft Security DevOps GitHub action | Preview |
 
 ## Architecture
 
