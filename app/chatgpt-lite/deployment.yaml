@@ -47,6 +47,9 @@ spec:
               readOnly: true
           securityContext:
             readOnlyRootFilesystem: true
+          resources:
+            limits:
+              cpu: 2
       volumes:
         - name: secret-aoai
           csi:
