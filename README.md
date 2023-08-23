@@ -27,8 +27,8 @@
     - [x] Canary Deployment with Azure Service Mesh
     - [x] AOAI Application: [pichuang/chatgpt-lite][17]
   - [x] Static Code Analysis
-    - [x] aquasecurity/tfsec: Security scanner for your Terraform code
-    - [x] stackrox/kube-linter: Static analysis tool that checks Kubernetes YAML files and Helm charts to ensure the applications represented in them adhere to best practices.
+    - [x] [aquasecurity/tfsec][22]: Security scanner for your Terraform code
+    - [x] [stackrox/kube-linter][23]: Static analysis tool that checks Kubernetes YAML files and Helm charts to ensure the applications represented in them adhere to best practices.
 
 ## Prerequisites
 
@@ -51,6 +51,8 @@
 | OSS Project | Version |
 |:-----------:|:-------:|
 | blrchen/chatgpt-lite | latest |
+| aquasecurity/tfsec | lastet (v.1.28.1) |
+| stackrox/kube-linter | v1.0.4 |
 
 ## Architecture
 
@@ -101,3 +103,5 @@
 [19]: https://azure.microsoft.com/en-us/updates/generally-available-kubernetes-127-support-in-aks/
 [20]: https://github.com/Yidadaa/ChatGPT-Next-Web
 [21]: https://external-secrets.io/latest/examples/gitops-using-fluxcd/
+[22]: https://github.com/aquasecurity/tfsec
+[23]: https://github.com/stackrox/kube-linter
