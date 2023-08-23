@@ -48,7 +48,7 @@
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
 | Azure Key Vault Secrets Provider                         | GA                |                      |
-| Microsoft Defender for Cloud - DevOps security           | Preview           |                      |
+| [Microsoft Defender for Cloud - DevOps security][25]     | Preview           |                      |
 
 | OSS Project | Version |
 |:-----------:|:-------:|
@@ -108,3 +108,4 @@
 [22]: https://github.com/aquasecurity/tfsec
 [23]: https://github.com/stackrox/kube-linter
 [24]: https://learn.microsoft.com/en-us/azure/defender-for-cloud/github-action
+[25]: https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-devops-introduction
