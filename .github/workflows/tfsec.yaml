@@ -41,14 +41,14 @@ jobs:
 
       - name: Create ../results directory for SARIF report files
         shell: bash
-        run: mkdir -p ../results
+        run: mkdir -p ../results && ls -la ../
 
       - name: Scan yaml files with kube-linter
         uses: stackrox/kube-linter-action@v1.0.4
         id: kube-linter-action-scan
         with:
           directory: app/chatgpt-lite
-          config: /.kube-linter-config.yaml
+          config: ../.kube-linter-config.yaml
           format: sarif
           output-file: ../results/kube-linter.sarif
         continue-on-error: true
