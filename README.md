@@ -3,7 +3,7 @@
 [![Run Azure Login with OpenID Connect](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/test-oidc-login.yml)
 [![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
 
-- Last Updated: `20230817`
+- Last Updated: `20230823`
 - STATUS: `WIP, DO NOT USE`
 - TODO
   - [x] GitHub Workflow and Terraform setup
