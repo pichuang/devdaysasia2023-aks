@@ -45,6 +45,8 @@ spec:
             - name: secret-aoai
               mountPath: "/mnt/secrets-store"
               readOnly: true
+          securityContext:
+            readOnlyRootFilesystem: true
       volumes:
         - name: secret-aoai
           csi:
