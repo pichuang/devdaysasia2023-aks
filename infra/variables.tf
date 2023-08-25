@@ -40,3 +40,4 @@ variable "environment" {
   description = "value of the environment"
   default     = "bootstrap"
 }
+

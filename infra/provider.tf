@@ -20,6 +20,7 @@ terraform {
       # https://registry.terraform.io/providers/hashicorp/null/latest/docs
       version = ">=3.2.1"
     }
+
   }
 
   # When authenticating using OpenID Connect (OIDC)

@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   image_cleaner_enabled        = false
   image_cleaner_interval_hours = 48
 
-  # node_resource_group
+  private_cluster_enabled = false # Better to use true
 
   api_server_access_profile {
     authorized_ip_ranges = ["0.0.0.0/0"]
@@ -107,26 +107,40 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   oidc_issuer_enabled       = true
   workload_identity_enabled = true
+
+  oms_agent {
+    log_analytics_workspace_id      = azurerm_log_analytics_workspace.law-logging.id
+    msi_auth_for_monitoring_enabled = true
+  }
+
+  depends_on = [azurerm_log_analytics_workspace.law-logging]
+
 }
 
-# resource "azurerm_kubernetes_cluster_node_pool" "nodepool-app1" {
-#   name                  = "generic-gw"
-#   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-#   vm_size               = "Standard_D4_v3"
-#   enable_auto_scaling   = true
-#   node_count            = 0
-#   min_count = 1
-#   max_count = 3
-#   max_pods = 3
-#   os_disk_type = "Managed"
-#   os_sku = "Mariner"
-#   os_disk_size_gb = 128
-#   os_type = "Linux"
-#   priority = "Regular"
-#   scale_down_mode = "Delete"
+resource "azurerm_kubernetes_cluster_node_pool" "nodepool-spot" {
+  name                  = "spot"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  vm_size               = "Standard_DS2_v2"
+  enable_auto_scaling   = false
+  node_count            = 0
+  priority              = "Spot"
+  eviction_policy       = "Delete"
+  spot_max_price        = 0.5
+  min_count             = 0
+  max_count             = 2
+  max_pods              = 250
+  os_disk_type          = "Managed"
+  os_sku                = "Mariner"
+  os_disk_size_gb       = 128
+  os_type               = "Linux"
+  scale_down_mode       = "Delete"
+  node_labels = {
+    "kubernetes.azure.com/scalesetpriority" = "spot"
+  }
+  node_taints = [
+    "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
+  ]
 
-#   vnet_subnet_id = azurerm_subnet.subnet-aks-nodepool-app1.id
+  vnet_subnet_id = azurerm_subnet.subnet-aks-spot.id
 
-#   node_labels = { "name": "generic-gw" }
-
-# }
+}

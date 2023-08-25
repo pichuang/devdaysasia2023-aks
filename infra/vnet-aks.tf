@@ -70,3 +70,14 @@ resource "azurerm_subnet" "subnet-aks-nodepool-app1" {
   ]
 }
 
+resource "azurerm_subnet" "subnet-aks-spot" {
+  name                 = "subnet-aks-spot"
+  resource_group_name  = var.lab-rg
+  virtual_network_name = azurerm_virtual_network.vnet-aks.name
+  # 10.0.195.4 - 10.0.195.254
+  address_prefixes = ["10.0.195.0/24"]
+
+  depends_on = [
+    azurerm_virtual_network.vnet-aks
+  ]
+}
