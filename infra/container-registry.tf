@@ -22,6 +22,10 @@ resource "azurerm_container_registry" "acrdevdaysasia2023" {
     regional_endpoint_enabled = true
     zone_redundancy_enabled   = false
   }
+
+  depends_on = [
+    azurerm_resource_group.resource-group
+  ]
 }
 
 # resource "azurerm_role_assignment" "role-assignment-acr" {

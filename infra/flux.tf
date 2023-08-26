@@ -46,8 +46,8 @@ resource "azurerm_kubernetes_flux_configuration" "flux-config" {
   }
 
   kustomizations {
-    name                       = "chatgpt-ui"
-    path                       = "./app/chatgpt-ui"
+    name                       = "chatgpt-lite"
+    path                       = "./app/chatgpt-lite"
     garbage_collection_enabled = true
     recreating_enabled         = true
     sync_interval_in_seconds   = 60

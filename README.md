@@ -48,7 +48,7 @@
 | [Azure Managed Grafana][3]                               | GA                | v9.5.6 (859a2654d3)  |
 | Azure AI services - Azure OpenAI (AOAI)                  | GA                | gpt-35-turbo (0301)  |
 | Azure Key Vault Secrets Provider                         | GA                |                      |
-| [Microsoft Defender for Cloud - DevOps security][25]     | Preview           |                      |
+| [Microsoft Defender for Cloud - DevOps security][25]     | Preview           | v1.7.2               |
 
 | OSS Project | Version |
 |:-----------:|:-------:|

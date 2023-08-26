@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   automatic_channel_upgrade = "patch"
   kubernetes_version        = "1.27.3"
 
-  node_os_channel_upgrade   = "SecurityPatch"
+  node_os_channel_upgrade = "SecurityPatch"
 
   image_cleaner_enabled        = false
   image_cleaner_interval_hours = 48

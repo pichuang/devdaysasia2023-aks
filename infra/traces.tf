@@ -8,6 +8,10 @@ resource "azurerm_log_analytics_workspace" "law-traces" {
   sku               = "PerGB2018"
   retention_in_days = 30 # 30 ~ 730
   daily_quota_gb    = 1  # -1 (unlimited)
+
+  depends_on = [
+    azurerm_resource_group.resource-group
+  ]
 }
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights
