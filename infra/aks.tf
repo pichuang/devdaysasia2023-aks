@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   private_cluster_enabled = false # Better to use true
 
   api_server_access_profile {
-    authorized_ip_ranges = ["0.0.0.0/0"]
+    authorized_ip_ranges = ["122.116.0.0/16"]
     # subnet_id
     # vnet_integration_enabled
   }
