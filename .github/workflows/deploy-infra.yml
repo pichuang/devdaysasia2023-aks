@@ -245,7 +245,7 @@ jobs:
         echo "SERVICE_ACCOUNT_ISSUER=$(az aks show --resource-group rg-devdaysasia2023 --name aks-devdaysasia2023 --query oidcIssuerProfile.issuerUrl -otsv)" >> $GITHUB_ENV"
 
         - name: Create credential.json
-        run: echo '{"issuer": "'"${SERVICE_ACCOUNT_ISSUER}"'"}' > credential.json
+        run: echo '{"issuer": "'"${SERVICE_ACCOUNT_ISSUER:-NULL}"'"}' > credential.json
 
     - name: Update Service Principle
       run: |
