@@ -27,3 +27,36 @@ resource "azurerm_log_analytics_solution" "las-aks" {
 
   depends_on = [azurerm_log_analytics_workspace.law-logging]
 }
+
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting
+resource "azurerm_monitor_diagnostic_setting" "diagnostic-aks" {
+  name                       = "diagnostic-aks"
+  target_resource_id         = azurerm_kubernetes_cluster.aks.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.law-logging.id
+
+  enabled_log {
+    category = "kube-controller-manager"
+
+  }
+
+  enabled_log {
+    category = "kube-audit"
+
+  }
+
+  enabled_log {
+    category = "guard"
+
+  }
+
+  enabled_log {
+    category = "cluster-autoscaler"
+
+  }
+
+  metric {
+    enabled  = false
+    category = "AllMetrics"
+
+  }
+}

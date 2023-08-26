@@ -1,0 +1,184 @@
+name: Import Terraform State
+# on:[push]
+on:
+  workflow_dispatch:
+    inputs:
+      resouce_name:
+        type: string
+        description: "Resource Name"
+        required: true
+      resource_id:
+        type: string
+        description: "Resource ID"
+        required: true
+
+  pull_request:
+    paths:
+    - infra/**
+
+env:
+  tf_actions_working_dir: infra
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      tfplanExitCode: ${{ steps.plan.outputs.exitcode }}
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Masking Resource Name
+      run: |
+        RESOURCE_NAME=$(jq -r '.inputs.resouce_name' $GITHUB_EVENT_PATH)
+        echo ::add-mask::$RESOURCE_NAME
+        echo RESOURCE_NAME=$RESOURCE_NAME >> $GITHUB_ENV
+
+    - name: Masking Resource ID
+      run: |
+        RESOURCE_ID=$(jq -r '.inputs.resource_id' $GITHUB_EVENT_PATH)
+        echo ::add-mask::$RESOURCE_ID
+        echo RESOURCE_ID=$RESOURCE_ID >> $GITHUB_ENV
+
+    - name: Log in to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    # Terraform Quality Checks
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v3
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Init TFLint
+      run: tflint --init
+
+    - name: Run TFLint
+      run: tflint -f compact
+
+    - name: Calculate destroy arg
+      id: destroy_arg
+      run: |
+        if [ "$DESTROY" == "true" ]; then
+          echo "::set-output name=val::-destroy"
+        else
+          echo "::set-output name=val:: "
+        fi
+      env:
+        DESTROY: ${{ github.event.inputs.is_destroy }}
+
+    - name: Calculate lock arg
+      id: lock_arg
+      run: |
+        if [ "$LOCK" == "true" ]; then
+          echo "::set-output name=val:: "
+        else
+          echo "::set-output name=val::-lock=false"
+        fi
+      env:
+        LOCK: ${{ github.event.inputs.is_lock }}
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan $DESTROY $LOCK -no-color --out=out.tfplan
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+        DESTROY: ${{ steps.destroy_arg.outputs.val }}
+        LOCK: ${{ steps.lock_arg.outputs.val }}
+
+    - name: Import
+      id: import
+      run: terraform import "${{ env.RESOURCE_NAME }}" "${{ env.RESOURCE_ID }}"
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        ARM_USE_OIDC: true
+
+    # https://github.com/marketplace/actions/trufflehog-oss
+    - name: TruffleHog OSS
+      uses: trufflesecurity/trufflehog@v3.52.1
+      with:
+        path: ${{ env.tf_actions_working_dir }}
+
+    - name: Publish Terraform Plan
+      uses: actions/upload-artifact@v3
+      with:
+        name: tf-plan
+        path: ${{ env.tf_actions_working_dir }}/out.tfplan
+
+    - name: Create the plan summary
+      uses: actions/github-script@v6
+      if: always()
+      id: summary
+      env:
+        PLAN: '${{ steps.plan.outputs.stdout }}'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // 1. Prep the output
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
+
+          \`\`\`
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
+
+          </details>
+
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          // 2. Set the output variable
+          const fs = require('fs');
+          fs.writeFileSync('${{ env.tf_actions_working_dir }}/summary.md', output);
+          core.setOutput('summary', output);
+
+    - name: Write the step summary
+      if: always()
+      run: cat summary.md >> $GITHUB_STEP_SUMMARY

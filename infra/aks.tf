@@ -45,7 +45,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name = "agentpool"
     # https://learn.microsoft.com/en-us/azure/virtual-machines/dv3-dsv3-series#dv3-series
     # 4c / 16G
-    vm_size                      = "Standard_D4_v3"
+    vm_size                      = "Standard_D4as_v5" # Standard_D4_v5
     node_count                   = 1
     enable_auto_scaling          = true
     max_count                    = 3
@@ -67,9 +67,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   identity {
-    # principal_id = (known after apply)
-    # tenant_id    = (known after apply)
-    type = "SystemAssigned" # SystemAssigned, UserAssigned
+    type = "SystemAssigned"
+    # type         = "UserAssigned" # SystemAssigned, UserAssigned
+    # identity_ids = [azurerm_user_assigned_identity.user-assigned-identity-aks.id]
   }
 
   # linux_profile {
@@ -120,7 +120,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     labels_allowed      = null
   }
 
-  depends_on = [azurerm_log_analytics_workspace.law-logging]
+  depends_on = [
+    azurerm_log_analytics_workspace.law-logging
+  ]
 
   lifecycle {
     ignore_changes = [
@@ -133,7 +135,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 resource "azurerm_kubernetes_cluster_node_pool" "nodepool-spot" {
   name                  = "spotpool"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_DS2_v2"
+  vm_size               = "Standard_D4as_v5"
   enable_auto_scaling   = true
   node_count            = 0
   priority              = "Spot"

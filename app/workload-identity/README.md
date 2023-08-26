@@ -16,7 +16,7 @@ Build KV based on this [article][3] and [Tutorial: Use a workload identity with 
 # 2. Export environment variables
 #
 # environment variables for the Azure Key Vault resource
-export KEYVAULT_NAME="kv-aoai"
+export KEYVAULT_NAME="kv-aoai-divecode"
 export KEYVAULT_SECRET_NAME="secret-helloworld"
 export KEYVAULT_RESOURCE_GROUP="rg-kv"
 export AKS_RESOURCE_GROUP="rg-devdaysasia2023"

@@ -4,8 +4,7 @@
 [![Run the Demo Infrastructure](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml/badge.svg?branch=main)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/deploy-infra.yml)
 [![Static Code Analysis](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/static-code-analysis.yaml/badge.svg)](https://github.com/pichuang/devdaysasia2023-aks/actions/workflows/static-code-analysis.yaml)
 
-- Last Updated: `20230826`
-- STATUS: `WIP, DO NOT USE`
+- Last Updated: `20230912`
 - TODO
   - [x] GitHub Workflow and Terraform setup
     - [x] [Use the Azure login action with OpenID Connect][9]
@@ -17,7 +16,7 @@
     - [x] Enable Azure Service Mesh
   - [x] Surrounding Services
     - [x] Azure Log Analytics Workspace
-    - [ ] Azure Monitor managed service for Prometheus
+    - [x] Azure Monitor managed service for Prometheus
     - [x] Azure Managed Grafana
     - [x] Azure OpenAI (AOAI): The service should be provisioned by manual, and get the API key
     - [x] Workload Identiy with OIDC
@@ -33,9 +32,26 @@
 
 ## Prerequisites
 
-- Create a new Resource Group
-- Setup a Storage Account for Terraform State
-- Setup
+1. Register provider and feature
+
+    ```bash
+    #!/bin/bash
+    az account set --subscription "YOUR_SUBSCRIPTION_ID"
+    az account show
+    az provider register --namespace "Microsoft.Dashboard" --wait
+    az provider register --namespace "Microsoft.Kubernetes"
+    az feature register --namespace "Microsoft.ContainerService" --name "AzureServiceMeshPreview"
+    az feature register --namespace "Microsoft.ContainerService" --name "NodeOsUpgradeChannelPreview"
+    az feature register --namespace "Microsoft.ContainerService" --name "AKS-ExtensionManager"
+    az feature register --namespace "Microsoft.ContainerService" --name "EnableAPIServerVnetIntegrationPreview"
+    sleep 600
+    ```
+
+2. Create a new Resource Group
+
+     - Setup a Storage Account for Terraform State
+     - Setup User Managed Identity
+     - Setup a Key Vault for saving AOAI secret
 
 ## Components Version
 
@@ -74,6 +90,7 @@
 - [flux/mozilla-sops/#azure][18]
 - [Yidadaa/ChatGPT-Next-Web][20]
 - [External Secrerts Operator - GitOps using FluxCD][21]
+- [4-5. Cloud Native New Year Wrap Up][22]
 
 ## Seminar Information
 
@@ -109,3 +126,4 @@
 [23]: https://github.com/stackrox/kube-linter
 [24]: https://learn.microsoft.com/en-us/azure/defender-for-cloud/github-action
 [25]: https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-devops-introduction
+[26]: https://azure.github.io/Cloud-Native/cnny-2023/

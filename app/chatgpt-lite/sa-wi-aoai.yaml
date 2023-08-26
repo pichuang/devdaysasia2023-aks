@@ -7,5 +7,5 @@ metadata:
   labels:
     azure.workload.identity/use: "true"
   annotations:
-    azure.workload.identity/client-id: 81504550-8929-4447-8c5f-dd9e9eae2237
-    azure.workload.identity/tenant-id: 16b3c013-d300-468d-ac64-7eda0820b6d3
+    azure.workload.identity/client-id: 00f1d4d1-aa25-44c0-ba16-07bce619e467
+    azure.workload.identity/tenant-id: 60c041af-d3e5-4152-a034-e8e449c34ab4

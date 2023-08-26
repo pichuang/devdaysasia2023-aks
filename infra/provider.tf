@@ -27,7 +27,7 @@ terraform {
   # https://developer.hashicorp.com/terraform/language/settings/backends/azurerm#example-configuration
   backend "azurerm" {
     resource_group_name  = "rg-terraform"
-    storage_account_name = "saprodevdays2023asiaaks"
+    storage_account_name = "sadevdays2023asiaaks"
     container_name       = "tfstatfile"
     key                  = "production.terraform.tfstate"
     use_oidc             = true

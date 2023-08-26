@@ -2,10 +2,10 @@
 
 
 ```bash
-export APPLICATION_NAME="sp-devdaysasia2023-github"
+export APPLICATION_NAME="sp-devdaysasia2023"
 
 az cloud set --name AzurePublicCloud
-az login
+az login --tenant 20000000-0000-0000-0000-000000000000
 az account set --subscription="20000000-0000-0000-0000-000000000000"
 az ad sp create-for-rbac -n "${APPLICATION_NAME}" --role="Contributor" --scopes="/subscriptions/20000000-0000-0000-0000-000000000000"
 ```
