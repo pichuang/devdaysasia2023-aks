@@ -63,7 +63,7 @@ jobs:
       #     [[ "${{ steps.kube-linter-action-scan.outcome }}" == "success" ]]
 
   msdo:
-    name: Microsoft Security DevOps Analysis
+    name: "Microsoft Defender For Devops"
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
@@ -73,7 +73,7 @@ jobs:
 
       # Run analyzers
       - name: Run Microsoft Security DevOps Analysis
-        uses: microsoft/security-devops-action@preview
+        uses: microsoft/security-devops-action@v1.7.2
         id: msdo
 
       # Upload alerts to the Security tab
