@@ -46,6 +46,7 @@ spec:
               mountPath: "/mnt/secrets-store"
               readOnly: true
           securityContext:
+            runAsUser: 1000
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
           resources:
