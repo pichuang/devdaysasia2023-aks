@@ -1,0 +1,55 @@
+name: Hack for Application
+
+# on:[push]
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Who to greet"
+        default: "World"
+
+  pull_request:
+    paths:
+    - infra/**
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  hack-chatgpt-lite:
+    name: Hack for Application chatgpt-lite
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Log in to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AOAI_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        audience: api://AzureADTokenExchange
+
+    - name: Get Service Account Issuers
+      run: |
+        echo "SERVICE_ACCOUNT_ISSUER=$(az aks show --resource-group rg-devdaysasia2023 --name aks-devdaysasia2023 --query oidcIssuerProfile.issuerUrl -otsv)" >> $GITHUB_ENV
+
+    - name: Create credential.json
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: credential.json
+        json: ${{ secrets.CREDENTIAL_JSON }}
+
+    - name: Update credential.json
+      uses: jossef/action-set-json-field@v2.1
+      with:
+        file: credential.json
+        field: issuer
+        value: ${{ env.SERVICE_ACCOUNT_ISSUER }}
+
+    - name: Update Service Principle
+      run: |
+        az ad app federated-credential update --id ${{ secrets.AZURE_CLIENT_ID }} --federation-credential-id ${{ secrets.FEDERATION_PROVIDER_ID }} --parameters credential.json

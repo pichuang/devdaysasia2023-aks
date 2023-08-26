@@ -17,7 +17,7 @@
     - [x] Enable Azure Service Mesh
   - [x] Surrounding Services
     - [x] Azure Log Analytics Workspace
-    - [x] Azure Monitor managed service for Prometheus
+    - [ ] Azure Monitor managed service for Prometheus
     - [x] Azure Managed Grafana
     - [x] Azure OpenAI (AOAI): The service should be provisioned by manual, and get the API key
     - [x] Workload Identiy with OIDC

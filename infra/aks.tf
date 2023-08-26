@@ -115,7 +115,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
     msi_auth_for_monitoring_enabled = true
   }
 
+  monitor_metrics {
+    annotations_allowed = null
+    labels_allowed      = null
+  }
+
   depends_on = [azurerm_log_analytics_workspace.law-logging]
+
+  lifecycle {
+    ignore_changes = [
+      default_node_pool[0].node_count
+    ]
+  }
 
 }
 
@@ -144,5 +155,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepool-spot" {
   ]
 
   vnet_subnet_id = azurerm_subnet.subnet-aks-spot.id
+
+  depends_on = [azurerm_kubernetes_cluster.aks, azurerm_subnet.subnet-aks-spot]
+
+  lifecycle {
+    ignore_changes = [
+      node_count
+    ]
+  }
 
 }
