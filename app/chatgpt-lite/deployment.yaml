@@ -47,6 +47,7 @@ spec:
               readOnly: true
           securityContext:
             readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
           resources:
             limits:
               cpu: 2
